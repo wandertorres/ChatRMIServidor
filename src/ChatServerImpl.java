@@ -36,13 +36,6 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 			if(!hash.getKey().equals(name))
 				hash.getValue().disse(name, msg);
 	}
-	
-	@Override
-	public void falarPara(String name, String para, String msg) throws RemoteException {
-		for (Entry<String, ChatClient> hash : clientesRegistrados.entrySet())
-			if(hash.getKey().equals(para))
-				hash.getValue().disse(name, msg);
-	}
 
 	@Override
 	public String[] naSessao() throws RemoteException {

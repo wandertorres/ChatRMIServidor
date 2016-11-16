@@ -11,9 +11,6 @@ public interface ChatServer extends Remote {
 	public void falar(String name, String msg)
 		throws RemoteException;
 	
-	public void falarPara(String name, String para, String msg)
-			throws RemoteException;
-	
 	public String[] naSessao()
 		throws RemoteException;
 }
