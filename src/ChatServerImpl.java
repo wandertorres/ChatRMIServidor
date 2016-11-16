@@ -11,27 +11,23 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
 	
 	private static final long serialVersionUID = 1L;
 	private static Map<String, ChatClient> clientesRegistrados = new Hashtable<String, ChatClient>();
-
+	
+	private void evento(String nickname, String msg) throws RemoteException {
+		for (Entry<String, ChatClient> hash : clientesRegistrados.entrySet())
+			if(!hash.getKey().equals(nickname))
+				hash.getValue().evento(nickname+msg);
+	}
+	
 	@Override
 	public void conectar(String nickname, ChatClient cliente) throws RemoteException {
-		String teste = "nickvalido";
-		for(Entry<String, ChatClient> hash : clientesRegistrados.entrySet()) {
-			if(hash.getKey().equals(nickname) || nickname.trim().equals("")) {
-				teste = "\\nickinvalido";
-				break;
-			}
-		}
-		
-		if(teste.contains("nickvalido")) {
-			clientesRegistrados.put(nickname, cliente);
-			cliente.evento("\\entrou");
-		}else
-			cliente.evento("\\nickinvalido");
+		clientesRegistrados.put(nickname, cliente);
+		evento(nickname, " entrou na sala...");
 	}
 
 	@Override
-	public void desconectar(String name, ChatClient cliente) throws RemoteException {
-		clientesRegistrados.remove(name, cliente);
+	public void desconectar(String nickname, ChatClient cliente) throws RemoteException {
+		clientesRegistrados.remove(nickname, cliente);
+		evento(nickname, " saiu da sala...");
 	}
 
 	@Override
